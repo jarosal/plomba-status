@@ -2,8 +2,9 @@
   import { backOut } from "svelte/easing";
   import { fly } from "svelte/transition";
   import { onMount } from "svelte";
+  import { PUBLIC_PLOMBA_PRICE } from '$env/static/public'
 
-  let price: number = 50;
+  const price = +PUBLIC_PLOMBA_PRICE;
   let show = false;
 
   onMount(() => (show = true));
