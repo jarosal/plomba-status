@@ -4,16 +4,15 @@
   import { onMount } from "svelte";
   import { PUBLIC_PLOMBA_PRICE } from '$env/static/public'
 
-  const price = +PUBLIC_PLOMBA_PRICE;
-  let show = false;
+  const plombaPrice = +PUBLIC_PLOMBA_PRICE;
+  const isPlombaWorthBreaking = plombaPrice <= 25;
 
-  onMount(() => (show = true));
-
-  $: isProfitable = price <= 25;
-
-  let decision: string = isProfitable ? "TAK" : "NIE";
-
+  let verdict = isPlombaWorthBreaking ? "TAK" : "NIE";
+  
   const words = ["Czy opłaca sie", "", "zerwać plombe", "", "na funfit?"];
+
+  let showAnimations = false;
+  onMount(() => (showAnimations = true));
 </script>
 
 <div class="flex flex-col place-content-center min-h-screen">
@@ -23,7 +22,7 @@
     <div class="flex flex-col card m-4 p-4 pb-6">
       <div class="inline-block overflow-hidden max-w-[900px] text-center">
         {#each words as word, i}
-          {#if show}
+          {#if showAnimations}
             <span
               in:fly={{
                 y: 100,
@@ -37,7 +36,7 @@
           {/if}
         {/each}
       </div>
-      {#if show}
+      {#if showAnimations}
         <div class="m-2 pt-4 text-center tracking-wide">
           <p
             in:fly={{
@@ -46,14 +45,14 @@
               easing: backOut,
             }}
             class="font-bold"
-            class:text-success-500={isProfitable}
-            class:text-error-500={!isProfitable}
+            class:text-success-500={isPlombaWorthBreaking}
+            class:text-error-500={!isPlombaWorthBreaking}
           >
-            {decision}
+            {verdict}
           </p>
         </div>
       {/if}
-      {#if show}
+      {#if showAnimations}
         <div class="inline-block text-center">
           <p
             in:fly={{
@@ -63,7 +62,7 @@
             }}
             class="text-strong"
           >
-            Aktualna cena to {price} zł
+            Aktualna cena to {plombaPrice} zł
           </p>
         </div>
       {/if}
